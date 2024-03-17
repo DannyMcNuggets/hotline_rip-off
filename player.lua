@@ -109,8 +109,8 @@ function Player:mousepressed(x, y, button) -- firing a bullet
 end
 
 function Player:dead()
-    --self.alive = false
-    --self.collider:setLinearVelocity(0, 0)
+    self.alive = false
+    self.collider:setLinearVelocity(0, 0)
     self.can_shoot = false
     self.image = self.dead_image
     self.angle = -self.angle -- reverse image of dead body
