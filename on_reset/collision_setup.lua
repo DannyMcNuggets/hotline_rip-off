@@ -1,5 +1,5 @@
--- Function to set up collision classes
-local function setupCollisionClasses(world, game_map, windowCollidersV, windowCollidersH)
+-- collision_setup.lua
+local function setupCollisionClasses(world, game_map)
     local static_layers = {"walls", "furniture", "boundaries", "low_furniture", "passage", "windows_v", "windows_h"}
     for i, layer_name in ipairs(static_layers) do
         for j, obj in ipairs(game_map.layers[layer_name].objects) do

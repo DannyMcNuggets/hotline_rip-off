@@ -1,5 +1,5 @@
 -- camera_setup.lua
-local camera = require "camera"
+local camera = require "on_reset/camera"
 
 -- Function to calculate zoom factor based on aspect ratio
 local function calculateZoomFactor(screenWidth, screenHeight)

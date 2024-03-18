@@ -193,9 +193,21 @@ function Enemy.createEnemies(game_map)
     return list
 end
 
+function Enemy.updateEnemies(list_of_enemies, dt)
+    for i,v in ipairs(list_of_enemies) do -- update enemies
+        v:update(dt)
+    end
+end
+
 function Enemy.triggerEnemies(list_of_enemies)
     for i, enemy in ipairs(list_of_enemies) do
         enemy.triggered = enemy.hearing and true
+    end
+end
+
+function Enemy.drawEnemies(list_of_enemies)
+    for i,v in ipairs(list_of_enemies) do
+        v:draw()
     end
 end
 

@@ -95,12 +95,14 @@ function Bullet:update(dt)
 	end
 end
 
+
 function Bullet:draw()
 	if self.exit_shooter then
 		local x, y = self.collider:getPosition()
     	love.graphics.draw(self.image, x, y, self.angle, self.scale, self.scale, self.origin_x, self.origin_y)
     end
 end
+
 
 function Bullet.updateBullets(list_of_bullets, dt)
 	for i = #list_of_bullets, 1, -1 do
@@ -109,6 +111,13 @@ function Bullet.updateBullets(list_of_bullets, dt)
 		table.remove(list_of_bullets, i)
 		end
 		v:update(dt)
+	end
+end
+
+
+function Bullet.drawBullets(list_of_buleets)
+	for i,v in ipairs(list_of_bullets) do
+		v:draw()
 	end
 end
 

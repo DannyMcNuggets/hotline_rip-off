@@ -44,7 +44,7 @@ function Menu.keypressed(key)
    		end
    	elseif key == "return" then
    		if Menu.selected_option == 1 then
-            gameFunctions.transitionToGame()
+            transitionToGame()
    		elseif Menu.selected_option == 2 then
    			love.event.quit()
    		end
