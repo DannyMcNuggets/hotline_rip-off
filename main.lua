@@ -11,6 +11,10 @@ function love.load()
 	Restart = require 'restart'
 	gameFunctions = require 'game_functions'
 	bulletClass = require "bullet"
+	push = require 'push'
+	local gameWidth, gameHeight = 1280, 800 -- fixed game resolution
+    local windowWidth, windowHeight = love.window.getDesktopDimensions()
+    push:setupScreen(gameWidth, gameHeight, windowWidth, windowHeight, {fullscreen = false, resizable = true, pixelperfect = true})
 
 	-- resets the game level (also prepares it for initial start)
 	resetGame()
@@ -61,8 +65,10 @@ end
 
 function love.draw()
 	love.mouse.setCursor(love.mouse.getSystemCursor("crosshair")) 
-	love.graphics.setBackgroundColor(Background.getColor()) -- change colors of background
+	--love.graphics.setBackgroundColor(Background.getColor()) -- change colors of background
 
+	push:start()
+	love.graphics.setBackgroundColor(Background.getColor())
 	if game_state == "menu" then
 		Menu.draw()
 		love.mouse.setVisible(false)
@@ -112,6 +118,8 @@ function love.draw()
 		love.mouse.setVisible(false)
 		Gameover.draw()
 	end
+	push:finish()
+
 end
 
 
