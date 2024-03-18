@@ -9,7 +9,6 @@ function love.load()
 	Gameover = require 'on_load/gameover' 
 	Restart = require 'on_load/restart'
 	gameFunctions = require 'on_load/game_functions'
-	bulletClass = require 'on_load/bullet'
 
 	--initial game_state
 	game_state = 'menu'
@@ -133,6 +132,7 @@ function resetGame()
 	local camera_setup = require "on_reset/camera_setup"
     cam = camera_setup.setupCamera()
 
+	bulletClass = require 'on_reset/bullet'
 	list_of_bullets = {} -- create empty list of bullets
 
 	-- so these windows are very special and complicated, do not try to understand this :)
