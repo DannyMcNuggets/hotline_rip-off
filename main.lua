@@ -4,19 +4,22 @@ function love.load()
 
 	-- initializes modules for the menu, gameplay, etc. 
 	Object = require "classic"
-	game_state = "menu"
 	Menu = require "menu"
 	Gameover = require 'gameover' 
-	wf = require 'windfield'
 	Restart = require 'restart'
 	gameFunctions = require 'game_functions'
 	bulletClass = require "bullet"
+
+	--initial game_state
+	game_state = "menu"
+
 	-- resets the game level (also prepares it for initial start)
 	resetGame()
 
 	-- set up sound
 	sounds = require 'load_and_setup/loadSounds'
 	sounds.loadSounds()
+
 end
 
 
@@ -139,6 +142,7 @@ end
 function resetGame()
 
 	-- create a new world
+	local wf = require 'windfield'
 	world = wf.newWorld()
 
 	-- set up collision classes
