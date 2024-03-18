@@ -106,12 +106,20 @@ end
 
 function Bullet.updateBullets(list_of_bullets, dt)
 	for i = #list_of_bullets, 1, -1 do
-		  local v = list_of_bullets[i]
-		  if not v.alive then
-		    table.remove(list_of_bullets, i)
-		  end
-		  v:update(dt)
+		local v = list_of_bullets[i]
+		if not v.alive then
+		table.remove(list_of_bullets, i)
 		end
+		v:update(dt)
+	end
 end
+
+
+function Bullet.triggerEnemies(list_of_enemies)
+    for i, enemy in ipairs(list_of_enemies) do
+        enemy.triggered = enemy.hearing and true
+    end
+end
+
 
 return Bullet

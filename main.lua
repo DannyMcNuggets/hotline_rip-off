@@ -1,9 +1,8 @@
--- main.lua
-
+-- main.lua handles the core game loop and state management.
 function love.load()
 	love.graphics.setDefaultFilter('nearest', 'nearest')
 
-	-- set up initial game state
+	-- initializes modules for the menu, gameplay, etc. 
 	Object = require "classic"
 	game_state = "menu"
 	Menu = require "menu"
@@ -15,7 +14,7 @@ function love.load()
 
 	test_font = love.graphics.newFont('fonts/BebasNeue-Regular.ttf', 12) -- testing
 
-	-- reset all instances and lists, reload sounds
+	-- resets the game level (also prepares it for initial start)
 	resetGame()
 
 	-- set up sound
@@ -24,13 +23,15 @@ function love.load()
 end
 
 
-function love.update(dt)
+function love.update(dt) -- Manages transitions between the menu, gameplay, and game over states.
 	--fps = love.timer.getFPS() -- for testing
 	Background.update(dt)
 
+	-- menu logic is handles by love.draw and love.keypressed
 	if game_state == "menu" then
 		menu_music:play()
 
+	-- updates gameplay logic like the player, camera, bullets, and enemies.
 	elseif game_state == "playing" then
 		bulletClass.updateBullets(list_of_bullets, dt) -- update bullets and remove destroyed ones
 
@@ -40,23 +41,28 @@ function love.update(dt)
 	        v:update(dt)
 	    end
 
-    	-- camera offset and zooming
+    	-- camera 
     	cam:updateShake(dt) -- shake when player fired
-    	-- function camera:figureDistance(baseDistance, extendedDistance)
-    	-- function camera:lockPositionOffset(player, distance, stiffness)
-	    cam:lockPositionOffset(player, cam:figureDistance(40, 110), 30)
-	    cam:rotateToGradually(0.12) -- rotation based on player's location
+		
+		-- cam:figureDistance сalculates camera position for default and "zoomed aiming"  
+		-- function camera:figureDistance(baseDistance, extendedDistance) 
+
+		-- cam:lockPositionOffset locks camera to player with offset determined by figureDistance() 
+		--function camera:lockPositionOffset(player, distance, stiffness)
+		cam:lockPositionOffset(player, cam:figureDistance(40, 110), 30)
+	
+		cam:rotateToGradually(0.12) -- map rotation based on player's location
 
 	    world:update(dt)
 
 	elseif game_state == "game_over" then
 		gameFunctions.gameOverPassagePassed()
 	end
-end
+
 
 
 function love.draw()
-	love.mouse.setCursor(love.mouse.getSystemCursor("crosshair"))
+	love.mouse.setCursor(love.mouse.getSystemCursor("crosshair")) 
 	love.graphics.setBackgroundColor(Background.getColor()) -- change colors of background
 
 	if game_state == "menu" then
@@ -77,6 +83,7 @@ function love.draw()
 
 			player:draw()
 
+			-- 
 		    for i, collider in ipairs(windowCollidersV) do
 			    local x = collider:getX() - windowV:getWidth() / 2
 			    local y = collider:getY() - windowV:getHeight() / 2
@@ -92,7 +99,7 @@ function love.draw()
 			--world:draw() -- for testing
 		cam:detach()
 
-		-- small window if player died 
+		-- small window suggesting restart if player died 
 		if not player.alive then
 			Restart.rectangularRestart(dt)
 		end
@@ -106,7 +113,7 @@ function love.draw()
 end
 
 
-function love.keypressed(key)
+function love.keypressed(key) -- handles input based on the current game state.
     if game_state == "playing" then
         if key == "escape" then
             gameFunctions.transitionToMenu()
@@ -124,9 +131,12 @@ end
 function love.mousepressed(x, y, button)
     if game_state == "playing" then
         player:mousepressed(x, y, button) -- logic for firing a bullet
+		Bullet.triggerEnemies(list_of_enemies)
+		--[[
         for i,v in ipairs(list_of_enemies) do -- trigger enemies who can 'hear' the shot
         	v.triggered = v.hearing and true
         end
+		]]
     end
 end
 
