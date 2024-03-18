@@ -12,8 +12,6 @@ function love.load()
 	gameFunctions = require 'game_functions'
 	bulletClass = require "bullet"
 
-	test_font = love.graphics.newFont('fonts/BebasNeue-Regular.ttf', 12) -- testing
-
 	-- resets the game level (also prepares it for initial start)
 	resetGame()
 
@@ -58,7 +56,7 @@ function love.update(dt) -- Manages transitions between the menu, gameplay, and 
 	elseif game_state == "game_over" then
 		gameFunctions.gameOverPassagePassed()
 	end
-
+end
 
 
 function love.draw()
@@ -67,8 +65,10 @@ function love.draw()
 
 	if game_state == "menu" then
 		Menu.draw()
+		love.mouse.setVisible(false)
 
 	elseif game_state == "playing" then
+		love.mouse.setVisible(true)
 		cam:attach()
 			game_map:drawLayer(game_map.layers["baseLayer"])
 			game_map:drawLayer(game_map.layers["detailsLayer"])
@@ -104,10 +104,12 @@ function love.draw()
 			Restart.rectangularRestart(dt)
 		end
 
+		--local test_font = love.graphics.newFont('fonts/BebasNeue-Regular.ttf', 12) -- testing
 		--love.graphics.setFont(test_font)
 		--love.graphics.print("Current FPS: "..tostring(love.timer.getFPS( )), 100, 100) -- for testing
 
 	elseif game_state == "game_over" then
+		love.mouse.setVisible(false)
 		Gameover.draw()
 	end
 end
@@ -131,12 +133,7 @@ end
 function love.mousepressed(x, y, button)
     if game_state == "playing" then
         player:mousepressed(x, y, button) -- logic for firing a bullet
-		Bullet.triggerEnemies(list_of_enemies)
-		--[[
-        for i,v in ipairs(list_of_enemies) do -- trigger enemies who can 'hear' the shot
-        	v.triggered = v.hearing and true
-        end
-		]]
+		Enemy.triggerEnemies(list_of_enemies)
     end
 end
 

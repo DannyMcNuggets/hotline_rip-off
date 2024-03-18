@@ -57,7 +57,6 @@ function Bullet:update(dt)
 	   		local collision_data = self.collider:getEnterCollisionData('player')
 	   		local player = collision_data.collider:getObject()
 	   		if player ~= self.shooter then
-	   			print("player shot himself")
 	   			player:dead() 
 	   		end
 	   		bullet_hit:play()
@@ -67,7 +66,6 @@ function Bullet:update(dt)
 	   		local collision_data = self.collider:getEnterCollisionData('enemy')
 	   		local enemy = collision_data.collider:getObject()
 	   		if enemy ~= self.shooter then
-	   			print("enemy shot himself")
 	   			enemy:dying()
 	   		end
 	   		bullet_hit:play()
@@ -112,13 +110,6 @@ function Bullet.updateBullets(list_of_bullets, dt)
 		end
 		v:update(dt)
 	end
-end
-
-
-function Bullet.triggerEnemies(list_of_enemies)
-    for i, enemy in ipairs(list_of_enemies) do
-        enemy.triggered = enemy.hearing and true
-    end
 end
 
 
