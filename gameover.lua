@@ -6,12 +6,17 @@ local Gameover = {
 }
 
 function Gameover.draw()
-	-- love.graphics.printf("Congrats, you passed the game", 0, love.graphics.getWidth()/2, love.graphics.getHeight()/2, "center")
-	love.graphics.setColor(1, 1, 1)
-	love.graphics.print("congrats", 400, 400)
+    local optionHeight = menu_font:getHeight()
+    local totalHeight = optionHeight * #Gameover.options
 
-	for i, option in ipairs(Gameover.options) do
-        local y = (love.graphics.getHeight()/2 + love.graphics.getHeight()/5) + i * 50
+    -- Start drawing from the lower quarter of the screen
+    local startY = love.graphics.getHeight() * 3 / 4
+
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.print("congrats", 400, 400) -- magic numbers, random location
+
+    for i, option in ipairs(Gameover.options) do
+        local y = startY + (i - 1) * optionHeight
         local color = {1, 1, 1}  -- default color is white
 
         if i == Gameover.selected_option then
